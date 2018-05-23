@@ -1,4 +1,4 @@
-package com.github.gfx.android.orma.example.fragment
+package com.github.gfx.android.orma_kotlin_example
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -13,9 +13,6 @@ import android.widget.ArrayAdapter
 import android.widget.Toast
 import com.github.gfx.android.orma.AccessThreadConstraint
 import com.github.gfx.android.orma.example.handwritten.HandWrittenOpenHelper
-import com.github.gfx.android.orma_kotlin_example.OrmaDatabase
-import com.github.gfx.android.orma_kotlin_example.OrmaTodo
-import com.github.gfx.android.orma_kotlin_example.RealmTodo
 import com.github.gfx.android.orma_kotlin_example.databinding.FragmentBenchmarkBinding
 import com.github.gfx.android.orma_kotlin_example.databinding.ItemResultBinding
 import io.reactivex.Single
@@ -42,10 +39,10 @@ class BenchmarkFragment : Fragment() {
 
     internal lateinit var adapter: ResultAdapter
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentBenchmarkBinding.inflate(inflater, container, false)
 
-        adapter = ResultAdapter(context)
+        adapter = ResultAdapter(context!!)
         binding.list.setAdapter(adapter)
 
         binding.run.setOnClickListener({ v -> run() })
@@ -61,8 +58,8 @@ class BenchmarkFragment : Fragment() {
         Realm.deleteRealm(realmConf)
 
         Schedulers.io().createWorker().schedule {
-            context.deleteDatabase("orma-benchmark.db")
-            orma = OrmaDatabase.builder(context)
+            context?.deleteDatabase("orma-benchmark.db")
+            orma = OrmaDatabase.builder(context!!)
                     .name("orma-benchmark.db")
                     .readOnMainThread(AccessThreadConstraint.NONE)
                     .writeOnMainThread(AccessThreadConstraint.NONE)
@@ -71,12 +68,8 @@ class BenchmarkFragment : Fragment() {
             orma.migrate()
         }
 
-        context.deleteDatabase("hand-written.db")
-        hw = HandWrittenOpenHelper(context, "hand-written.db")
-    }
-
-    override fun onPause() {
-        super.onPause()
+        context?.deleteDatabase("hand-written.db")
+        hw = HandWrittenOpenHelper(context!!, "hand-written.db")
     }
 
     internal fun run() {
