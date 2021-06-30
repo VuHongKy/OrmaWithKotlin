@@ -115,8 +115,9 @@ class BenchmarkFragment : Fragment() {
 
                     val statement = orma.prepareInsertIntoOrmaTodo()
 
-                    for (i in 0..N_ITEMS - 1) {
-                        val todo = OrmaTodo(0, titlePrefix + 1, contentPrefix + 1, false, Date(now))
+                    for (i in 0 until N_ITEMS) {
+                        // listOf(Location(10.5, 5.0))
+                        val todo = OrmaTodo(0, titlePrefix + 1, listOf("Kyle", "Vu", "Handsome"), false, Date(now))
                         statement.execute(todo)
                     }
                 })
@@ -132,7 +133,7 @@ class BenchmarkFragment : Fragment() {
                 realm.executeTransaction { r ->
                     val now = System.currentTimeMillis()
 
-                    for (i in 0..N_ITEMS - 1) {
+                    for (i in 0 until N_ITEMS) {
                         val todo = r.createObject(RealmTodo::class.java)
 
                         todo.title = titlePrefix + i
@@ -189,6 +190,7 @@ class BenchmarkFragment : Fragment() {
                     @SuppressWarnings("unused")
                     val createdTime = todo.createdTime
 
+                    Log.w("Test list", todo.content.joinToString())
                     count.incrementAndGet()
                 }
 

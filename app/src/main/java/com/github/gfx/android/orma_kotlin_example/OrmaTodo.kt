@@ -10,8 +10,8 @@ import java.util.*
 data class OrmaTodo(
         @Setter("id") @PrimaryKey var id: Long,
         @Setter("title") @Column(indexed = true) var title: String,
-        @Setter("content") @Column var content: String,
+        @Setter("content") @Column var content: List<String>,
+        @Setter("content") @Column var locations: List<Location>,
         @Setter("done") @Column var done: Boolean,
         @Setter("createdTime") @Column(indexed = true) var createdTime: Date
-) {
-}
+)
